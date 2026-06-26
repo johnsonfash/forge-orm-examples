@@ -1,6 +1,9 @@
-// Offline-first pattern: writes hit OPFS immediately (optimistic UI),
-// an `outbox` table queues the same op for later server sync. A
-// background loop drains the outbox when online. Lazy singleton.
+// Offline-first pattern. Writes go straight to the local SQLite DB;
+// a separate `outbox` table queues the same op for later server sync.
+//
+// This example uses `:memory:` so it runs in sandboxed iframes
+// (StackBlitz). For real offline-first persistence switch the `url`
+// to `"opfs-sahpool:///offline.sqlite"` and data survives reloads.
 
 import { createDb, f, model, wasmSqliteDriver } from "forge-orm"
 
@@ -30,7 +33,12 @@ function open() {
   )
   return createDb({
     schema,
-    driver: wasmSqliteDriver({ worker, url: "opfs-sahpool:///offline.sqlite" }),
+    driver: wasmSqliteDriver({
+      worker,
+      // Demo-friendly default. Use `"opfs-sahpool:///offline.sqlite"`
+      // in production.
+      url: ":memory:",
+    }),
   })
 }
 export function getDb() {

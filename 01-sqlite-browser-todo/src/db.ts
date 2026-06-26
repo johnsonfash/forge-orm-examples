@@ -1,5 +1,10 @@
-// Browser-side forge-orm. Data lives in OPFS so it survives page
-// reloads and tab restarts. Lazy singleton — boots once on first use.
+// Browser-side forge-orm. Lazy singleton — boots once on first use.
+//
+// In production you'll want OPFS persistence (`opfs-sahpool:///todo.sqlite`)
+// so the data survives reloads. But OPFS sync access handles aren't
+// available in some sandboxed iframes (e.g. StackBlitz's WebContainer
+// preview), so this example uses `:memory:` to guarantee the demo
+// runs everywhere. Switch the `url` line for production.
 
 import { createDb, f, model, wasmSqliteDriver } from "forge-orm"
 
@@ -15,7 +20,6 @@ export const schema = { todo: Todo }
 let dbPromise: ReturnType<typeof open> | null = null
 
 function open() {
-  // Vite bundles the worker thanks to forgeWasm() in vite.config.ts.
   const worker = new Worker(
     new URL("forge-orm/wasm/worker", import.meta.url),
     { type: "module" },
@@ -24,9 +28,10 @@ function open() {
     schema,
     driver: wasmSqliteDriver({
       worker,
-      // opfs-sahpool is the canonical OPFS scheme — survives reloads.
-      // Swap to ":memory:" for a throwaway in-memory DB.
-      url: "opfs-sahpool:///todo.sqlite",
+      // Demo: in-memory so it works everywhere (including sandboxed
+      // iframes that block OPFS).
+      // Production: `"opfs-sahpool:///todo.sqlite"` to persist.
+      url: ":memory:",
     }),
   })
 }
@@ -36,9 +41,9 @@ export function getDb() {
   return dbPromise
 }
 
-// Idempotent — safe to call on every app boot.
 export async function bootDb() {
   const db = await getDb()
+  // No-op for :memory: but the call is cheap and OPFS-safe.
   if (navigator.storage?.persist) await navigator.storage.persist()
   await db.$migrate()
   return db
