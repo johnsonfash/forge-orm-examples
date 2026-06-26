@@ -1,6 +1,6 @@
 # 03 · DuckDB analytics
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/johnsonfash/forge-orm-examples/tree/main/03-duckdb-analytics)
+> ⚠️ **Needs local Node or Codespaces — not StackBlitz.** DuckDB's Node bindings use a native `.node` addon (`dlopen`), which WebContainers block (`ERR_DLOPEN_DISABLED`). Run locally with `npm install && npm run dev`, or open the repo in a Codespace (the included [`.devcontainer/`](../.devcontainer) gives you a real Linux VM).
 
 Seeds 5,000 sales rows into an in-process DuckDB and runs aggregations. Demonstrates columnar storage + vectorised execution for OLAP workloads, plus the cross-dialect `groupBy` API and `$queryRaw` escape hatch.
 

@@ -25,7 +25,7 @@ const RecipeLine = model("recipe_lines", {
 }))
 
 const db = await createDb({
-  url: "file:./bom.db",
+  url: "pglite:./bom",
   schema: { recipe: Recipe, recipeLine: RecipeLine },
 })
 await db.$migrate()

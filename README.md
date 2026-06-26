@@ -10,11 +10,16 @@ Every example is **self-contained** (its own `package.json`) and **embeddable** 
 |---|---|---|---|---|
 | 01 | [sqlite-browser-todo](./01-sqlite-browser-todo) | SQLite (wasm + OPFS) | Vite + React | The "hello world" — schema, query, mutate in a tab |
 | 02 | [sqlite-browser-offline-first](./02-sqlite-browser-offline-first) | SQLite (wasm + OPFS) | Vite + React | Optimistic UI + queued sync stub |
-| 03 | [duckdb-analytics](./03-duckdb-analytics) | DuckDB (Node) | Plain Node | 5K-row groupBy + raw-SQL revenue rollup |
-| 04 | [node-sqlite-cli](./04-node-sqlite-cli) | SQLite (native) | Plain Node | Smallest possible forge-orm program |
+| 04 | [node-sqlite-cli](./04-node-sqlite-cli) | Postgres (PGlite) | Plain Node | Smallest possible forge-orm program |
 | 05 | [hono-pglite-api](./05-hono-pglite-api) | Postgres (PGlite) | Hono | REST CRUD with no external DB |
 | 06 | [nextjs-pglite-fullstack](./06-nextjs-pglite-fullstack) | Postgres (PGlite) | Next.js App Router | Server actions + RSC reads |
-| 07 | [bun-sqlite-blog](./07-bun-sqlite-blog) | SQLite (native) | Bun | Bun's native SQLite driver |
+
+## Needs local Node (uses native bindings — WebContainers block `.node` addons)
+
+| # | Example | Dialect | Why local |
+|---|---|---|---|
+| 03 | [duckdb-analytics](./03-duckdb-analytics) | DuckDB | `@duckdb/node-api` is a native addon |
+| 07 | [bun-sqlite-blog](./07-bun-sqlite-blog) | SQLite | Bun's built-in SQLite is native |
 
 ## Feature showcases
 

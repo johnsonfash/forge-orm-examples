@@ -12,7 +12,7 @@ const User = model("users", {
 })
 
 const db = await createDb({
-  url: "file:./drift.db",
+  url: "pglite:./drift",
   schema: { user: User },
 })
 

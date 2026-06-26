@@ -9,7 +9,7 @@ const Account = model("accounts", {
 })
 
 const db = await createDb({
-  url: "file:./tx.db",
+  url: "pglite:./tx",
   schema: { account: Account },
 })
 await db.$migrate()

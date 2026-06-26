@@ -22,7 +22,7 @@ const AuditEntry = model("audit_entries", {
 })
 
 const db = await createDb({
-  url: "file:./audit.db",
+  url: "pglite:./audit",
   schema: { invoice: Invoice, auditEntry: AuditEntry },
 })
 await db.$migrate()
