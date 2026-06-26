@@ -10,7 +10,7 @@ Every example is **self-contained** (its own `package.json`) and **embeddable** 
 |---|---|---|---|---|
 | 01 | [sqlite-browser-todo](./01-sqlite-browser-todo) | SQLite (wasm + OPFS) | Vite + React | The "hello world" — schema, query, mutate in a tab |
 | 02 | [sqlite-browser-offline-first](./02-sqlite-browser-offline-first) | SQLite (wasm + OPFS) | Vite + React | Optimistic UI + queued sync stub |
-| 03 | [duckdb-analytics-browser](./03-duckdb-analytics-browser) | DuckDB (wasm) | Vite + React | Aggregations + columnar reads in the tab |
+| 03 | [duckdb-analytics](./03-duckdb-analytics) | DuckDB (Node) | Plain Node | 5K-row groupBy + raw-SQL revenue rollup |
 | 04 | [node-sqlite-cli](./04-node-sqlite-cli) | SQLite (native) | Plain Node | Smallest possible forge-orm program |
 | 05 | [hono-pglite-api](./05-hono-pglite-api) | Postgres (PGlite) | Hono | REST CRUD with no external DB |
 | 06 | [nextjs-pglite-fullstack](./06-nextjs-pglite-fullstack) | Postgres (PGlite) | Next.js App Router | Server actions + RSC reads |
