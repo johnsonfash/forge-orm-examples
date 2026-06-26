@@ -14,12 +14,14 @@ Every example is **self-contained** (its own `package.json`) and **embeddable** 
 | 05 | [hono-pglite-api](./05-hono-pglite-api) | Postgres (PGlite) | Hono | REST CRUD with no external DB |
 | 06 | [nextjs-pglite-fullstack](./06-nextjs-pglite-fullstack) | Postgres (PGlite) | Next.js App Router | Server actions + RSC reads |
 
-## Needs local Node (uses native bindings — WebContainers block `.node` addons)
+## Needs a real VM (native bindings — WebContainers block `.node` addons)
 
-| # | Example | Dialect | Why local |
+| # | Example | Dialect | Why |
 |---|---|---|---|
-| 03 | [duckdb-analytics](./03-duckdb-analytics) | DuckDB | `@duckdb/node-api` is a native addon |
+| 03 | [duckdb-analytics](./03-duckdb-analytics) | DuckDB | `@duckdb/node-api` is native |
 | 07 | [bun-sqlite-blog](./07-bun-sqlite-blog) | SQLite | Bun's built-in SQLite is native |
+
+Each example's README has buttons for free VM-backed sandboxes — **CodeSandbox DevBox**, **GitHub Codespaces**, **Gitpod**, and **Replit**. All have generous free tiers.
 
 ## Feature showcases
 
