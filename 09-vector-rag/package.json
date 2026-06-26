@@ -6,7 +6,7 @@
   "scripts": { "dev": "tsx src/index.ts" },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.13",
-    "forge-orm": "^2.5.3"
+    "forge-orm": "^2.5.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

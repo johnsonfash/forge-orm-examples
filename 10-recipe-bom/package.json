@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": { "dev": "tsx src/index.ts" },
   "dependencies": {
-    "forge-orm": "^2.5.3"
+    "forge-orm": "^2.5.5"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.12",
