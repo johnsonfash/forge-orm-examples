@@ -4,6 +4,6 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": { "dev": "tsx src/index.ts" },
-  "dependencies": { "forge-orm": "^2.5.5" },
+  "dependencies": { "forge-orm": "^2.5.6" },
   "devDependencies": { "@types/better-sqlite3": "^7.6.12", "@types/node": "^22.10.0", "better-sqlite3": "^11.5.0", "tsx": "^4.19.2", "typescript": "~5.6.3" }
 }
