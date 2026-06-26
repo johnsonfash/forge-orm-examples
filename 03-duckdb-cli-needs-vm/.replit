@@ -1,0 +1,9 @@
+run = "npm install && npm run dev"
+entrypoint = "src/index.ts"
+modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["npm", "run", "dev"]
