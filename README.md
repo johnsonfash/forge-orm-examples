@@ -39,6 +39,15 @@ Every example is **self-contained** (its own `package.json`) and **embeddable** 
 
 ## How to use
 
+**Examples 04–15** run in any **StackBlitz** tab — every README has a button. WebContainers spin up Node, `npm install`, and the dev server.
+
+**Examples 16, 17, 18** need a real Postgres / SQL Server / Mongo. Three ways:
+- **GitHub Codespaces** — click *Code → Create codespace on main*. The [`.devcontainer/`](./.devcontainer) spec auto-starts all three DBs with pre-set `DATABASE_URL_*` env vars
+- **Gitpod** — same devcontainer applies
+- **Local Docker** — `docker compose -f .devcontainer/docker-compose.yml up -d` then `npm install && npm run dev`
+
+Free hosted alternatives (Neon, Supabase, Mongo Atlas, PlanetScale) work too — see [`.devcontainer/README.md`](./.devcontainer/README.md) for connection-string shapes.
+
 **Try in the browser** — every example has a "Run in StackBlitz" button at the top of its README. WebContainers spin up a real Node.js, run `npm install`, and start the dev server.
 
 **Clone locally** — copy any folder:
