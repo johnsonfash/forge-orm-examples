@@ -14,8 +14,7 @@ Copy the connection string — looks like `postgres://user:pass@host:5432/db?ssl
 
 ## Run it
 
-- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — pick `18-postgres-rls-auth`, paste URI into Secrets as `DATABASE_URL`, hit Run
-- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/18-postgres-rls-auth)** — same flow
+- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/18-postgres-rls-auth)** — paste URI into the env editor as `DATABASE_URL`, hit Run
 
 Or locally with Docker:
 

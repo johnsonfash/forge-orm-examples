@@ -8,8 +8,7 @@
 
 ## Run it
 
-- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — pick `16-mongo-atlas-blog`, paste your URI into the Secrets panel as `DATABASE_URL`, hit Run
-- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/16-mongo-atlas-blog)** — same flow, paste into the env editor
+- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/16-mongo-atlas-blog)** — paste your URI into the env editor as `DATABASE_URL`, hit Run
 
 Or locally:
 

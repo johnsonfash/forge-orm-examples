@@ -24,9 +24,9 @@ Pure-JS / wasm stacks — boots in your browser tab.
 | 14 | [transactions](./14-transactions) | Postgres (PGlite) | Plain Node | Atomic batch + nested savepoints |
 | 15 | [migrations-drift](./15-migrations-drift) | Postgres (PGlite) | Plain Node | `db.$migrate()` + `db.$diff()` |
 
-## Runs on Replit or CodeSandbox (auto-runs on click)
+## Runs in CodeSandbox (auto-runs on click)
 
-Needs a real OS for native bindings. Both have `.replit` / `.codesandbox/tasks.json` configs that auto-install + run.
+Needs a real OS for native bindings. Each has a `.codesandbox/tasks.json` that auto-installs + runs.
 
 | # | Example | Dialect | Why |
 |---|---|---|---|
@@ -35,7 +35,7 @@ Needs a real OS for native bindings. Both have `.replit` / `.codesandbox/tasks.j
 
 ## Needs a real DB server (point at a free hosted one)
 
-Replit and CodeSandbox both work fine — the app code runs in their VM, the DB lives in a free hosted tier. Each README has paste-ready `.env` instructions.
+CodeSandbox VM runs the app, the DB lives in a free hosted tier. Each README has paste-ready `.env` instructions.
 
 | # | Example | Dialect | Free hosted option |
 |---|---|---|---|
@@ -48,8 +48,7 @@ Replit and CodeSandbox both work fine — the app code runs in their VM, the DB 
 | Service | Free tier | What it gives you | Best for |
 |---|---|---|---|
 | **[StackBlitz](https://stackblitz.com)** | Unlimited | Browser-only Node (WebContainer) | Examples 01, 02, 04, 05, 06, 08–15 |
-| **[Replit](https://replit.com)** | Free | Linux container, auto-runs `.replit` | Examples 03, 07 (native) + 16, 17, 18 (hosted DB) |
-| **[CodeSandbox](https://codesandbox.io)** | Free for public projects | Linux VM, auto-runs `tasks.json` | Same as Replit |
+| **[CodeSandbox](https://codesandbox.io)** | Free for public projects | Linux VM, auto-runs `tasks.json` | Examples 03, 07 (native) + 16, 17, 18 (hosted DB) |
 
 ## Clone locally
 

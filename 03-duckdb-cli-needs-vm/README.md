@@ -2,14 +2,13 @@
 
 Seeds 5,000 sales rows into in-process DuckDB and runs aggregations. Demonstrates columnar storage + vectorised execution for OLAP, plus the cross-dialect `groupBy` API and `$queryRaw` escape hatch.
 
-## Run it (auto-runs on click)
+## Run it
 
-DuckDB's Node bindings ship a native `.node` addon, so this needs a real OS — not StackBlitz. Both options below auto-install + auto-run:
+DuckDB's Node bindings ship a native `.node` addon, so this needs a real OS — not StackBlitz. Click-and-run on CodeSandbox (`.codesandbox/tasks.json` auto-installs + runs):
 
-- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — pick the `03-duckdb-cli-needs-vm` folder, hit Run. The `.replit` config handles the rest.
-- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/03-duckdb-cli-needs-vm)** — `.codesandbox/tasks.json` auto-installs + runs.
+- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/03-duckdb-cli-needs-vm)**
 
-Fastest of all is local:
+Or fastest, locally:
 
 ```sh
 npx degit johnsonfash/forge-orm-examples/03-duckdb-cli-needs-vm my-demo

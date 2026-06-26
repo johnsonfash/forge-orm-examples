@@ -2,14 +2,13 @@
 
 Bun's built-in SQLite. Zero deps beyond `forge-orm`.
 
-## Run it (auto-runs on click)
+## Run it
 
-Bun's SQLite uses native bindings, needs a real OS — not StackBlitz. Both options auto-install Bun + auto-run:
+Bun's SQLite uses native bindings, needs a real OS — not StackBlitz. `.codesandbox/tasks.json` auto-installs Bun + auto-runs:
 
-- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — pick the `07-bun-cli-needs-vm` folder, hit Run. `.replit` config uses the Bun runtime module.
-- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/07-bun-cli-needs-vm)** — `.codesandbox/tasks.json` installs Bun then runs the demo.
+- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/07-bun-cli-needs-vm)**
 
-Local (fastest):
+Or locally (fastest):
 
 ```sh
 curl -fsSL https://bun.sh/install | bash
