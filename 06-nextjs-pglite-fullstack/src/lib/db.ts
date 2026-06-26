@@ -1,21 +1,22 @@
 // Single global db instance (Next.js hot-reload safe).
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 
-const Task = f.model({
-  id:        f.string().id().default("uuid"),
+const Task = model("tasks", {
+  id:        f.id({ type: "uuid" }),
   title:     f.string(),
   done:      f.bool().default(false),
   createdAt: f.dateTime().default("now"),
 })
 
-const globalForDb = globalThis as unknown as { db?: Awaited<ReturnType<typeof createDb<{ task: typeof Task }>>> }
+const schema = { task: Task }
+type DbType = Awaited<ReturnType<typeof createDb<typeof schema>>>
+const globalForDb = globalThis as unknown as { db?: DbType }
 
-export const db =
-  globalForDb.db ??
-  (await createDb({ url: "pglite:./.pgdata", schema: { task: Task } }))
-
-if (!globalForDb.db) {
+async function init(): Promise<DbType> {
+  const db = await createDb({ url: "pglite:./.pgdata", schema })
   await db.$migrate()
-  globalForDb.db = db
+  return db
 }
+
+export const db: DbType = globalForDb.db ?? (globalForDb.db = await init())

@@ -2,11 +2,11 @@
 // on it. The scoped-db wrapper makes the filter automatic so app code
 // can never accidentally cross orgs.
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 
-const Customer = f.model({
-  id:    f.string().id().default("uuid"),
-  orgId: f.string().indexed(),
+const Customer = model("customers", {
+  id:    f.id({ type: "uuid" }),
+  orgId: f.string(),
   name:  f.string(),
 })
 
@@ -22,7 +22,7 @@ function scoped(orgId: string) {
   return {
     customer: {
       findMany: () => db.customer.findMany({ where: { orgId } }),
-      create:   (data: Omit<Awaited<ReturnType<typeof db.customer.create>>, "id" | "orgId">) =>
+      create:   (data: { name: string }) =>
         db.customer.create({ data: { ...data, orgId } }),
     },
   }
@@ -31,8 +31,8 @@ function scoped(orgId: string) {
 const orgA = scoped("org-a")
 const orgB = scoped("org-b")
 
-await orgA.customer.create({ data: { name: "Alice (org-a)" } as never })
-await orgB.customer.create({ data: { name: "Bob   (org-b)" } as never })
+await orgA.customer.create({ name: "Alice (org-a)" })
+await orgB.customer.create({ name: "Bob   (org-b)" })
 
 console.log("org-a sees:", await orgA.customer.findMany())
 console.log("org-b sees:", await orgB.customer.findMany())

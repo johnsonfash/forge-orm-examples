@@ -4,11 +4,11 @@
 //
 // Local docker: docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 
-const Customer = f.model({
-  id:    f.string().id().default("uuid"),
-  orgId: f.string().indexed(),
+const Customer = model("customers", {
+  id:    f.id({ type: "uuid" }),
+  orgId: f.string(),
   name:  f.string(),
 })
 
@@ -21,18 +21,18 @@ if (!url) {
 const db = await createDb({ url, schema: { customer: Customer } })
 await db.$migrate()
 
-// One-time RLS setup (raw SQL — forge-orm exposes $raw for this).
-await db.$raw`
-  ALTER TABLE customer ENABLE ROW LEVEL SECURITY;
-  DROP POLICY IF EXISTS org_isolation ON customer;
-  CREATE POLICY org_isolation ON customer
-    USING (org_id = current_setting('app.current_org', true));
+// One-time RLS setup using $executeRaw.
+await db.$executeRaw`ALTER TABLE customers ENABLE ROW LEVEL SECURITY`
+await db.$executeRaw`DROP POLICY IF EXISTS org_isolation ON customers`
+await db.$executeRaw`
+  CREATE POLICY org_isolation ON customers
+    USING (org_id = current_setting('app.current_org', true))
 `
 
 // In a request handler: set the org for the duration of the connection.
 async function asOrg<T>(orgId: string, fn: () => Promise<T>): Promise<T> {
   return db.$transaction(async (tx) => {
-    await tx.$raw`SELECT set_config('app.current_org', ${orgId}, true)`
+    await tx.$executeRaw`SELECT set_config('app.current_org', ${orgId}, true)`
     return fn()
   })
 }

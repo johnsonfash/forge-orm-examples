@@ -2,10 +2,10 @@
 // file-based SQLite database via better-sqlite3 — no server, no
 // framework, no setup beyond `npm install && npm run dev`.
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 
-const User = f.model({
-  id:    f.string().id().default("uuid"),
+const User = model("users", {
+  id:    f.id({ type: "uuid" }),
   email: f.string().unique(),
   name:  f.string(),
 })

@@ -3,12 +3,12 @@
 // Same code targets pgvector / MySQL VECTOR / sqlite-vec / DuckDB vss
 // / MSSQL VECTOR / Mongo Atlas Vector Search.
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 
 // 1536 = OpenAI text-embedding-3-small dimension. Adjust to your model.
-const Doc = f.model({
-  id:    f.string().id().default("uuid"),
-  text:  f.text(),
+const Doc = model("docs", {
+  id:    f.id({ type: "uuid" }),
+  text:  f.text().unique(),
   embed: f.vector(1536, { metric: "cosine" }),
 })
 
@@ -40,7 +40,6 @@ for (const text of corpus) {
   })
 }
 
-// Find docs similar to a query — same vocabulary as geo `nearTo`.
 const query = "leavened dough"
 const matches = await db.doc.findMany({
   where: { embed: { nearTo: { vector: fakeEmbed(query), topK: 3 } } },

@@ -1,10 +1,10 @@
-// Bun's built-in SQLite — zero-dep, faster than better-sqlite3. forge-orm
-// picks it up automatically when running under Bun.
+// Bun's built-in SQLite via better-sqlite3-compatible driver. forge-orm
+// auto-detects the file: URL and picks the right adapter.
 
-import { createDb, f, rel } from "forge-orm"
+import { createDb, f, model, rel } from "forge-orm"
 
-const Post = f.model({
-  id:        f.string().id().default("uuid"),
+const Post = model("posts", {
+  id:        f.id({ type: "uuid" }),
   title:     f.string(),
   body:      f.text(),
   authorId:  f.string(),
@@ -12,8 +12,8 @@ const Post = f.model({
   author: rel.one("author", { on: "authorId", refs: "id" }),
 }))
 
-const Author = f.model({
-  id:    f.string().id().default("uuid"),
+const Author = model("authors", {
+  id:    f.id({ type: "uuid" }),
   email: f.string().unique(),
   name:  f.string(),
 }).relate(() => ({
@@ -21,7 +21,7 @@ const Author = f.model({
 }))
 
 const db = await createDb({
-  url: "bun-sqlite:./blog.db",
+  url: "file:./blog.db",
   schema: { author: Author, post: Post },
 })
 await db.$migrate()
@@ -36,5 +36,4 @@ await db.post.create({
   data: { authorId: ada.id, title: "On loops + mathematics", body: "..." },
 })
 
-const everything = await db.author.findMany({ include: { posts: true } })
-console.log(everything)
+console.log(await db.author.findMany({ include: { posts: true } }))

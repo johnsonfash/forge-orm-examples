@@ -1,12 +1,12 @@
 // Full-text search — same API across Postgres tsvector, MySQL FULLTEXT,
 // SQLite FTS5, MSSQL CONTAINS, Mongo text index.
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 
-const Article = f.model({
-  id:    f.string().id().default("uuid"),
-  title: f.string(),
-  body:  f.text().search(), // .search() marks the column FTS-indexed
+const Article = model("articles", {
+  id:    f.id({ type: "uuid" }),
+  title: f.string().unique(),
+  body:  f.text().searchable(), // marks the column FTS-indexed
 })
 
 const db = await createDb({

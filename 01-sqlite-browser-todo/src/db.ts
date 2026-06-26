@@ -1,22 +1,21 @@
 // Browser-side forge-orm. The data lives in OPFS so it survives page
-// reloads and tab restarts. Schema is just a single Todo table; add
-// more in this file and the UI types update automatically.
+// reloads and tab restarts.
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 import { wasmSqliteDriver } from "forge-orm/wasm"
-import SqliteWorker from "forge-orm/wasm/worker?worker"
 
-const Todo = f.model({
-  id:        f.string().id().default("uuid"),
+const Todo = model("todos", {
+  id:        f.id({ type: "uuid" }),
   title:     f.string(),
   done:      f.bool().default(false),
   createdAt: f.dateTime().default("now"),
 })
 
 const driver = wasmSqliteDriver({
-  worker: new SqliteWorker(),
-  // OPFS = Origin Private File System. Survives reload + tab close.
-  // Swap to `:memory:` for a throwaway DB.
+  // The Vite plugin in vite.config.ts wires up the worker bundle.
+  worker: new Worker(new URL("forge-orm/wasm/worker", import.meta.url), { type: "module" }),
+  // OPFS = Origin Private File System — persists across reloads.
+  // Use `:memory:` for a throwaway DB.
   url: "opfs:/todo.db",
 })
 

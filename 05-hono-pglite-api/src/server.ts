@@ -4,10 +4,10 @@
 
 import { Hono } from "hono"
 import { serve } from "@hono/node-server"
-import { createDb, f, rel } from "forge-orm"
+import { createDb, f, model, rel } from "forge-orm"
 
-const Post = f.model({
-  id:        f.string().id().default("uuid"),
+const Post = model("posts", {
+  id:        f.id({ type: "uuid" }),
   title:     f.string(),
   body:      f.text(),
   authorId:  f.string(),
@@ -16,8 +16,8 @@ const Post = f.model({
   author: rel.one("user", { on: "authorId", refs: "id" }),
 }))
 
-const User = f.model({
-  id:    f.string().id().default("uuid"),
+const User = model("users", {
+  id:    f.id({ type: "uuid" }),
   email: f.string().unique(),
   name:  f.string(),
 }).relate(() => ({

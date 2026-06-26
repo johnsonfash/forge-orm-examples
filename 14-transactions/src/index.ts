@@ -1,9 +1,9 @@
 // Transactions — atomic batch + nested savepoints.
 
-import { createDb, f } from "forge-orm"
+import { createDb, f, model } from "forge-orm"
 
-const Account = f.model({
-  id:      f.string().id().default("uuid"),
+const Account = model("accounts", {
+  id:      f.id({ type: "uuid" }),
   owner:   f.string().unique(),
   balance: f.int().default(0),
 })
@@ -17,7 +17,6 @@ await db.$migrate()
 await db.account.upsert({ where: { owner: "alice" }, create: { owner: "alice", balance: 100 }, update: {} })
 await db.account.upsert({ where: { owner: "bob" },   create: { owner: "bob",   balance: 100 }, update: {} })
 
-// Transfer money — succeed or rollback as one unit.
 async function transfer(from: string, to: string, amount: number) {
   await db.$transaction(async (tx) => {
     const sender = await tx.account.findUnique({ where: { owner: from } })
@@ -30,7 +29,7 @@ async function transfer(from: string, to: string, amount: number) {
 await transfer("alice", "bob", 30)
 
 try {
-  await transfer("alice", "bob", 1_000_000) // should rollback
+  await transfer("alice", "bob", 1_000_000) // rolls back
 } catch (e) {
   console.log("rolled back:", (e as Error).message)
 }

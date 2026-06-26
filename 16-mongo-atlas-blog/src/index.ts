@@ -1,21 +1,21 @@
 // Real Mongo (Atlas free tier). Set DATABASE_URL in .env.
 // Same forge-orm API as every other dialect — the change is one URL.
 
-import { createDb, f, rel } from "forge-orm"
+import { createDb, f, model, rel } from "forge-orm"
 
-const Author = f.model({
-  id:    f.string().id().default("uuid"),
+const Author = model("authors", {
+  id:    f.objectId(),
   email: f.string().unique(),
   name:  f.string(),
 }).relate(() => ({
   posts: rel.many("post", { on: "authorId", refs: "id" }),
 }))
 
-const Post = f.model({
-  id:        f.string().id().default("uuid"),
+const Post = model("posts", {
+  id:        f.objectId(),
   authorId:  f.string(),
   title:     f.string(),
-  body:      f.text().search(),
+  body:      f.text().searchable(),
   tags:      f.stringArray(),
   createdAt: f.dateTime().default("now"),
 }).relate(() => ({
