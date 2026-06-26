@@ -4,12 +4,18 @@ Seeds 5,000 sales rows into an in-process DuckDB and runs aggregations. Demonstr
 
 ## Run it
 
-DuckDB's Node bindings ship a native `.node` addon, so this example needs a real OS — not StackBlitz's WebContainer (which blocks `dlopen`). All free:
+DuckDB's Node bindings ship a native `.node` addon, so this example needs a real OS — not StackBlitz. All free:
 
-- **[Open in CodeSandbox DevBox](https://codesandbox.io/p/sandbox/github/johnsonfash/forge-orm-examples/main/03-duckdb-analytics)** — real cloud VM, click & run
-- **[Open in GitHub Codespaces](https://codespaces.new/johnsonfash/forge-orm-examples?devcontainer_path=.devcontainer/devcontainer.json)** — 60 free hrs/month
-- **[Open in Gitpod](https://gitpod.io/#https://github.com/johnsonfash/forge-orm-examples)** — 50 free hrs/month
-- **Locally** — `cd 03-duckdb-analytics && npm install && npm run dev`
+- **[Open in GitHub Codespaces](https://codespaces.new/johnsonfash/forge-orm-examples?devcontainer_path=.devcontainer/devcontainer.json)** — 60 free hrs/month. After it boots:
+  ```sh
+  cd 03-duckdb-cli-needs-vm && npm install && npm run dev
+  ```
+- **[Open in Gitpod](https://gitpod.io/#https://github.com/johnsonfash/forge-orm-examples)** — 50 free hrs/month. Same `cd && npm install && npm run dev` after boot.
+- **Locally** —
+  ```sh
+  npx degit johnsonfash/forge-orm-examples/03-duckdb-cli-needs-vm my-duckdb-demo
+  cd my-duckdb-demo && npm install && npm run dev
+  ```
 
 Prints two reports: top products by units sold + revenue by city.
 
@@ -18,7 +24,7 @@ Prints two reports: top products by units sold + revenue by city.
 - `url: "duckdb::memory:"` — DuckDB embedded, no server
 - `db.sale.createMany({ data: [...] })` — bulk insert
 - `groupBy({ by, _sum, orderBy })` — typed aggregation API
-- `db.$queryRaw\`...\`` — raw SQL when you want the dialect's full power
+- ``db.$queryRaw`...` `` — raw SQL when you want the dialect's full power
 
 ## When to pick DuckDB
 
@@ -27,4 +33,4 @@ Prints two reports: top products by units sold + revenue by city.
 - Embedded analytics inside desktop / CLI apps
 - BI-style queries that would be slow on row-stores
 
-> **Browser DuckDB**: forge-orm currently ships only the Node adapter (`@duckdb/node-api`). For in-browser DuckDB use the `@duckdb/duckdb-wasm` package directly; a forge-orm browser-DuckDB adapter is on the roadmap.
+> **Browser DuckDB**: forge-orm currently ships only the Node adapter (`@duckdb/node-api`). For in-browser DuckDB use `@duckdb/duckdb-wasm` directly; a forge-orm browser-DuckDB adapter is on the roadmap.
