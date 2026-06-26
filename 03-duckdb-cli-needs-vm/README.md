@@ -1,13 +1,17 @@
 # 03 · DuckDB analytics
 
-> ⚠️ **DuckDB's Node bindings are a native `.node` addon — won't run in StackBlitz** (`ERR_DLOPEN_DISABLED`). Free options that handle native addons:
->
-> - **[Open in CodeSandbox DevBox](https://codesandbox.io/p/sandbox/github/johnsonfash/forge-orm-examples/main/03-duckdb-analytics)** — runs in a real cloud VM (free for public projects)
-> - **[Open in GitHub Codespaces](https://codespaces.new/johnsonfash/forge-orm-examples?devcontainer_path=.devcontainer/devcontainer.json)** — 60 free hrs/month
-> - **[Open in Gitpod](https://gitpod.io/#https://github.com/johnsonfash/forge-orm-examples)** — 50 free hrs/month
-> - **Locally** — `cd 03-duckdb-analytics && npm install && npm run dev`
-
 Seeds 5,000 sales rows into an in-process DuckDB and runs aggregations. Demonstrates columnar storage + vectorised execution for OLAP workloads, plus the cross-dialect `groupBy` API and `$queryRaw` escape hatch.
+
+## Run it
+
+DuckDB's Node bindings ship a native `.node` addon, so this example needs a real OS — not StackBlitz's WebContainer (which blocks `dlopen`). All free:
+
+- **[Open in CodeSandbox DevBox](https://codesandbox.io/p/sandbox/github/johnsonfash/forge-orm-examples/main/03-duckdb-analytics)** — real cloud VM, click & run
+- **[Open in GitHub Codespaces](https://codespaces.new/johnsonfash/forge-orm-examples?devcontainer_path=.devcontainer/devcontainer.json)** — 60 free hrs/month
+- **[Open in Gitpod](https://gitpod.io/#https://github.com/johnsonfash/forge-orm-examples)** — 50 free hrs/month
+- **Locally** — `cd 03-duckdb-analytics && npm install && npm run dev`
+
+Prints two reports: top products by units sold + revenue by city.
 
 ## What this shows
 
@@ -15,14 +19,6 @@ Seeds 5,000 sales rows into an in-process DuckDB and runs aggregations. Demonstr
 - `db.sale.createMany({ data: [...] })` — bulk insert
 - `groupBy({ by, _sum, orderBy })` — typed aggregation API
 - `db.$queryRaw\`...\`` — raw SQL when you want the dialect's full power
-
-## Run
-
-```sh
-npm install && npm run dev
-```
-
-Prints two reports: top products by units sold + revenue by city.
 
 ## When to pick DuckDB
 
