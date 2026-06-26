@@ -2,13 +2,12 @@
 
 Seeds 5,000 sales rows into in-process DuckDB and runs aggregations. Demonstrates columnar storage + vectorised execution for OLAP, plus the cross-dialect `groupBy` API and `$queryRaw` escape hatch.
 
-## Run it (no typing — auto-runs on click)
+## Run it (auto-runs on click)
 
-DuckDB's Node bindings ship a native `.node` addon, so this needs a real OS — not StackBlitz. Three click-and-run options:
+DuckDB's Node bindings ship a native `.node` addon, so this needs a real OS — not StackBlitz. Both options below auto-install + auto-run:
 
-- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — auto-runs from `.replit` config. Pick the `03-duckdb-cli-needs-vm` folder, hit Run, see the output. Free, has Asia + Europe datacenters (faster from Nigeria than Codespaces).
-- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/03-duckdb-cli-needs-vm)** — `.codesandbox/tasks.json` auto-installs + runs. Sign-in required, free for public repos.
-- **[Open in GitHub Codespaces](https://codespaces.new/johnsonfash/forge-orm-examples?devcontainer_path=.devcontainer/devcontainer.json)** — boots VS Code. Manually: `cd 03-duckdb-cli-needs-vm && npm install && npm run dev`.
+- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — pick the `03-duckdb-cli-needs-vm` folder, hit Run. The `.replit` config handles the rest.
+- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/03-duckdb-cli-needs-vm)** — `.codesandbox/tasks.json` auto-installs + runs.
 
 Fastest of all is local:
 
@@ -16,6 +15,8 @@ Fastest of all is local:
 npx degit johnsonfash/forge-orm-examples/03-duckdb-cli-needs-vm my-demo
 cd my-demo && npm install && npm run dev
 ```
+
+Prints two reports: top products by units sold + revenue by city.
 
 ## What this shows
 

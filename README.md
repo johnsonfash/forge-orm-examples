@@ -24,35 +24,36 @@ Pure-JS / wasm stacks — boots in your browser tab.
 | 14 | [transactions](./14-transactions) | Postgres (PGlite) | Plain Node | Atomic batch + nested savepoints |
 | 15 | [migrations-drift](./15-migrations-drift) | Postgres (PGlite) | Plain Node | `db.$migrate()` + `db.$diff()` |
 
-## Needs a cloud VM (native `.node` addons — won't load in WebContainer)
+## Runs on Replit or CodeSandbox (auto-runs on click)
 
-| # | Example | Dialect | Where to run it |
+Needs a real OS for native bindings. Both have `.replit` / `.codesandbox/tasks.json` configs that auto-install + run.
+
+| # | Example | Dialect | Why |
 |---|---|---|---|
-| 03 | [duckdb-cli-needs-vm](./03-duckdb-cli-needs-vm) | DuckDB | CodeSandbox DevBox, Codespaces, Gitpod |
-| 07 | [bun-cli-needs-vm](./07-bun-cli-needs-vm) | SQLite (Bun) | CodeSandbox DevBox, Replit, Codespaces |
+| 03 | [duckdb-cli-needs-vm](./03-duckdb-cli-needs-vm) | DuckDB | `@duckdb/node-api` is a native addon |
+| 07 | [bun-cli-needs-vm](./07-bun-cli-needs-vm) | SQLite (Bun) | Bun's built-in SQLite is native |
 
-Each README links to the free VM-backed sandbox.
+## Needs a real DB server (point at a free hosted one)
 
-## Needs a real DB server
+Replit and CodeSandbox both work fine — the app code runs in their VM, the DB lives in a free hosted tier. Each README has paste-ready `.env` instructions.
 
-| # | Example | Dialect | Setup |
+| # | Example | Dialect | Free hosted option |
 |---|---|---|---|
-| 16 | [mongo-atlas-blog](./16-mongo-atlas-blog) | MongoDB | Free Atlas tier — paste URI into `.env` |
-| 17 | [mssql-merge-erp](./17-mssql-merge-erp) | SQL Server | Docker or Azure free tier |
-| 18 | [postgres-rls-auth](./18-postgres-rls-auth) | Postgres | Docker, Neon, Supabase, or Codespaces |
-
-Open the repo in **[GitHub Codespaces](https://codespaces.new/johnsonfash/forge-orm-examples?devcontainer_path=.devcontainer/devcontainer.json)** — the included [`.devcontainer/`](./.devcontainer) auto-starts all three DBs on standard ports with pre-set `DATABASE_URL_*` env vars.
+| 16 | [mongo-atlas-blog](./16-mongo-atlas-blog) | MongoDB | [Atlas free tier](https://www.mongodb.com/cloud/atlas/register) |
+| 17 | [mssql-merge-erp](./17-mssql-merge-erp) | SQL Server | [Azure SQL free tier](https://azure.microsoft.com/free/) (12 months) |
+| 18 | [postgres-rls-auth](./18-postgres-rls-auth) | Postgres | [Neon](https://neon.tech), [Supabase](https://supabase.com), [Aiven](https://aiven.io) |
 
 ## Sandbox-environment cheat sheet
 
 | Service | Free tier | What it gives you | Best for |
 |---|---|---|---|
 | **[StackBlitz](https://stackblitz.com)** | Unlimited | Browser-only Node (WebContainer) | Examples 01, 02, 04, 05, 06, 08–15 |
-| **[GitHub Codespaces](https://codespaces.new)** | 60 hrs/month | Linux VM + docker-in-docker | DuckDB, Bun, DB-server examples (03, 07, 16–18) |
-| **[Gitpod](https://gitpod.io)** | 50 hrs/month | Linux VM | Same — any native or external-DB example |
-| **[Replit](https://replit.com)** | Free (slower) | Container with Bun pre-installed | Bun example (07) |
+| **[Replit](https://replit.com)** | Free | Linux container, auto-runs `.replit` | Examples 03, 07 (native) + 16, 17, 18 (hosted DB) |
+| **[CodeSandbox](https://codesandbox.io)** | Free for public projects | Linux VM, auto-runs `tasks.json` | Same as Replit |
 
 ## Clone locally
+
+Always fastest — zero latency, native works:
 
 ```sh
 npx degit johnsonfash/forge-orm-examples/04-node-cli my-app

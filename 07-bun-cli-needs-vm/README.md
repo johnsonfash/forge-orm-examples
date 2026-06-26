@@ -2,13 +2,12 @@
 
 Bun's built-in SQLite. Zero deps beyond `forge-orm`.
 
-## Run it (no typing — auto-runs on click)
+## Run it (auto-runs on click)
 
-Bun's SQLite uses native bindings, needs a real OS — not StackBlitz. Three click-and-run options:
+Bun's SQLite uses native bindings, needs a real OS — not StackBlitz. Both options auto-install Bun + auto-run:
 
-- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — pick the `07-bun-cli-needs-vm` folder, hit Run. The `.replit` config auto-installs Bun + runs. Has Asia datacenters (faster from Nigeria).
-- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/07-bun-cli-needs-vm)** — `.codesandbox/tasks.json` auto-installs Bun + runs.
-- **[Open in GitHub Codespaces](https://codespaces.new/johnsonfash/forge-orm-examples?devcontainer_path=.devcontainer/devcontainer.json)** — manual: install Bun, then `cd 07-bun-cli-needs-vm && bun install && bun run dev`.
+- **[Run on Replit](https://replit.com/new/github/johnsonfash/forge-orm-examples)** — pick the `07-bun-cli-needs-vm` folder, hit Run. `.replit` config uses the Bun runtime module.
+- **[Run on CodeSandbox](https://codesandbox.io/p/devbox/github/johnsonfash/forge-orm-examples/main/07-bun-cli-needs-vm)** — `.codesandbox/tasks.json` installs Bun then runs the demo.
 
 Local (fastest):
 
