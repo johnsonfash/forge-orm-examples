@@ -48,9 +48,8 @@ Open the repo in **[GitHub Codespaces](https://codespaces.new/johnsonfash/forge-
 | Service | Free tier | What it gives you | Best for |
 |---|---|---|---|
 | **[StackBlitz](https://stackblitz.com)** | Unlimited | Browser-only Node (WebContainer) | Examples 01, 02, 04, 05, 06, 08–15 |
-| **[CodeSandbox DevBox](https://codesandbox.io)** | Public projects free | Real cloud VM | DuckDB, Bun, anything native |
-| **[GitHub Codespaces](https://codespaces.new)** | 60 hrs/month | Linux VM + docker-in-docker | DB-server examples (16–18) |
-| **[Gitpod](https://gitpod.io)** | 50 hrs/month | Linux VM | Same as Codespaces |
+| **[GitHub Codespaces](https://codespaces.new)** | 60 hrs/month | Linux VM + docker-in-docker | DuckDB, Bun, DB-server examples (03, 07, 16–18) |
+| **[Gitpod](https://gitpod.io)** | 50 hrs/month | Linux VM | Same — any native or external-DB example |
 | **[Replit](https://replit.com)** | Free (slower) | Container with Bun pre-installed | Bun example (07) |
 
 ## Clone locally
