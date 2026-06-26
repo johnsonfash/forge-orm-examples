@@ -1,41 +1,51 @@
 import React from "react"
-import { db } from "./db"
+import { bootDb } from "./db"
+
+type DbType = Awaited<ReturnType<typeof bootDb>>
+type Note = { id: string; text: string; syncedAt: Date | null; updatedAt: Date }
 
 export function App() {
-  const [notes, setNotes] = React.useState<Awaited<ReturnType<typeof db.note.findMany>>>([])
-  const [text, setText] = React.useState("")
+  const [db, setDb] = React.useState<DbType | null>(null)
+  const [bootError, setBootError] = React.useState<string | null>(null)
+  const [notes, setNotes] = React.useState<Note[]>([])
   const [pending, setPending] = React.useState(0)
+  const [text, setText] = React.useState("")
 
-  const reload = async () => {
-    setNotes(await db.note.findMany({ orderBy: { updatedAt: "desc" } }))
-    setPending((await db.outbox.findMany()).length)
-  }
-  React.useEffect(() => { reload() }, [])
-
-  // Background drain — pretend to sync every 5s if "online".
   React.useEffect(() => {
+    bootDb().then(setDb).catch((e: Error) => setBootError(e?.message ?? String(e)))
+  }, [])
+
+  const reload = React.useCallback(async () => {
+    if (!db) return
+    setNotes(await db.note.findMany({ orderBy: { updatedAt: "desc" } }) as Note[])
+    setPending((await db.outbox.findMany()).length)
+  }, [db])
+
+  React.useEffect(() => { if (db) reload() }, [db, reload])
+
+  // Background drain loop.
+  React.useEffect(() => {
+    if (!db) return
     const t = setInterval(async () => {
       if (!navigator.onLine) return
       const pending = await db.outbox.findMany({ orderBy: { queuedAt: "asc" }, take: 10 })
       for (const o of pending) {
-        // POST to your API here. We just mark synced on success.
-        await db.note.update({
-          where: { id: o.noteId },
-          data:  { syncedAt: new Date() },
-        }).catch(() => undefined)
-        await db.outbox.delete({ where: { id: o.id } })
+        // POST to your API here. Demo just marks synced.
+        await db.note.update({ where: { id: o.noteId as string }, data: { syncedAt: new Date() } }).catch(() => undefined)
+        await db.outbox.delete({ where: { id: o.id as string } })
       }
       reload()
     }, 5000)
     return () => clearInterval(t)
-  }, [])
+  }, [db, reload])
+
+  if (bootError) return <pre style={{ padding: 40, color: "#c00" }}>{bootError}</pre>
+  if (!db) return <p style={{ padding: 40, fontFamily: "system-ui" }}>Booting…</p>
 
   const add = async () => {
     if (!text.trim()) return
     const note = await db.note.create({ data: { text: text.trim() } })
-    await db.outbox.create({
-      data: { noteId: note.id, op: "create", payload: { text: note.text } },
-    })
+    await db.outbox.create({ data: { noteId: note.id, op: "create", payload: { text: note.text } } })
     setText("")
     reload()
   }

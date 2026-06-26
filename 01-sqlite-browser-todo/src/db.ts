@@ -1,8 +1,7 @@
-// Browser-side forge-orm. The data lives in OPFS so it survives page
-// reloads and tab restarts.
+// Browser-side forge-orm. Data lives in OPFS so it survives page
+// reloads and tab restarts. Lazy singleton — boots once on first use.
 
-import { createDb, f, model } from "forge-orm"
-import { wasmSqliteDriver } from "forge-orm/wasm"
+import { createDb, f, model, wasmSqliteDriver } from "forge-orm"
 
 const Todo = model("todos", {
   id:        f.id({ type: "uuid" }),
@@ -11,18 +10,36 @@ const Todo = model("todos", {
   createdAt: f.dateTime().default("now"),
 })
 
-const driver = wasmSqliteDriver({
-  // The Vite plugin in vite.config.ts wires up the worker bundle.
-  worker: new Worker(new URL("forge-orm/wasm/worker", import.meta.url), { type: "module" }),
-  // OPFS = Origin Private File System — persists across reloads.
-  // Use `:memory:` for a throwaway DB.
-  url: "opfs:/todo.db",
-})
+export const schema = { todo: Todo }
 
-export const db = await createDb({
-  driver,
-  schema: { todo: Todo },
-})
+let dbPromise: ReturnType<typeof open> | null = null
 
-// Idempotent: applies missing tables/indexes on every boot.
-await db.$migrate()
+function open() {
+  // Vite bundles the worker thanks to forgeWasm() in vite.config.ts.
+  const worker = new Worker(
+    new URL("forge-orm/wasm/worker", import.meta.url),
+    { type: "module" },
+  )
+  return createDb({
+    schema,
+    driver: wasmSqliteDriver({
+      worker,
+      // opfs-sahpool is the canonical OPFS scheme — survives reloads.
+      // Swap to ":memory:" for a throwaway in-memory DB.
+      url: "opfs-sahpool:///todo.sqlite",
+    }),
+  })
+}
+
+export function getDb() {
+  if (!dbPromise) dbPromise = open()
+  return dbPromise
+}
+
+// Idempotent — safe to call on every app boot.
+export async function bootDb() {
+  const db = await getDb()
+  if (navigator.storage?.persist) await navigator.storage.persist()
+  await db.$migrate()
+  return db
+}
