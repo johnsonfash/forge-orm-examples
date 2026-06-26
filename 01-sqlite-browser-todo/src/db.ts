@@ -18,6 +18,7 @@ const Todo = model("todos", {
 export const schema = { todo: Todo }
 
 let dbPromise: ReturnType<typeof open> | null = null
+let bootPromise: Promise<Awaited<ReturnType<typeof open>>> | null = null
 
 function open() {
   const worker = new Worker(
@@ -41,10 +42,17 @@ export function getDb() {
   return dbPromise
 }
 
-export async function bootDb() {
-  const db = await getDb()
-  // No-op for :memory: but the call is cheap and OPFS-safe.
-  if (navigator.storage?.persist) await navigator.storage.persist()
-  await db.$migrate()
-  return db
+// Boot is its own singleton — protects against React 18 StrictMode's
+// double-mount effect firing $migrate twice concurrently (which would
+// throw "cannot start a transaction within a transaction").
+export function bootDb() {
+  if (!bootPromise) {
+    bootPromise = (async () => {
+      const db = await getDb()
+      if (navigator.storage?.persist) await navigator.storage.persist()
+      await db.$migrate()
+      return db
+    })()
+  }
+  return bootPromise
 }

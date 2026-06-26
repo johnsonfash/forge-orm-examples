@@ -1,9 +1,8 @@
-// Offline-first pattern. Writes go straight to the local SQLite DB;
-// a separate `outbox` table queues the same op for later server sync.
+// Offline-first pattern. Writes go to the local SQLite DB; a separate
+// `outbox` table queues the same op for later server sync.
 //
-// This example uses `:memory:` so it runs in sandboxed iframes
-// (StackBlitz). For real offline-first persistence switch the `url`
-// to `"opfs-sahpool:///offline.sqlite"` and data survives reloads.
+// Uses `:memory:` so it runs in sandboxed iframes (StackBlitz). For real
+// offline-first persistence switch to `"opfs-sahpool:///offline.sqlite"`.
 
 import { createDb, f, model, wasmSqliteDriver } from "forge-orm"
 
@@ -26,6 +25,8 @@ const Outbox = model("outbox", {
 export const schema = { note: Note, outbox: Outbox }
 
 let dbPromise: ReturnType<typeof open> | null = null
+let bootPromise: Promise<Awaited<ReturnType<typeof open>>> | null = null
+
 function open() {
   const worker = new Worker(
     new URL("forge-orm/wasm/worker", import.meta.url),
@@ -33,21 +34,21 @@ function open() {
   )
   return createDb({
     schema,
-    driver: wasmSqliteDriver({
-      worker,
-      // Demo-friendly default. Use `"opfs-sahpool:///offline.sqlite"`
-      // in production.
-      url: ":memory:",
-    }),
+    driver: wasmSqliteDriver({ worker, url: ":memory:" }),
   })
 }
 export function getDb() {
   if (!dbPromise) dbPromise = open()
   return dbPromise
 }
-export async function bootDb() {
-  const db = await getDb()
-  if (navigator.storage?.persist) await navigator.storage.persist()
-  await db.$migrate()
-  return db
+export function bootDb() {
+  if (!bootPromise) {
+    bootPromise = (async () => {
+      const db = await getDb()
+      if (navigator.storage?.persist) await navigator.storage.persist()
+      await db.$migrate()
+      return db
+    })()
+  }
+  return bootPromise
 }
