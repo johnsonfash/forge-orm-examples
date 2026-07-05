@@ -53,11 +53,13 @@ let bootPromise: Promise<Awaited<ReturnType<typeof openDb>>> | null = null
 async function openDb() {
   // `idb:` URL scheme is the terse form; equivalent to
   // `driver: indexedDbDriver({ name: 'forge-cafes' })`.
-  //
-  // No explicit $migrate() call needed on IDB — `createDb` triggers
-  // `indexedDB.open()`, and the native `onupgradeneeded` handler is
-  // where the adapter creates any missing object stores + indexes.
-  return createDb({ schema, url: "idb:forge-cafes" })
+  const db = await createDb({ schema, url: "idb:forge-cafes" })
+  // $migrate() on IDB is a metadata pass — `createDb` already triggered
+  // `onupgradeneeded` inside the open, so this second call is idempotent
+  // (same fingerprint → no version bump). Keeps the code shape parity
+  // with the sqlite tier and returns the standard RuntimeApplyReport.
+  await db.$migrate()
+  return db
 }
 
 export function bootDb() {
