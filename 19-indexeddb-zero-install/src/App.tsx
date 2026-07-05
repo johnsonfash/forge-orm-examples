@@ -47,10 +47,13 @@ function CreateSection({ db, onDone }: { db: Db; onDone: () => void }) {
 
   async function create() {
     if (!name || !city) return
+    // Scatter the point inside a ~50 km box around central London so the
+    // geo section actually has spread to sort by.
+    const jitter = () => (Math.random() - 0.5) * 0.6
     await db.cafe.create({
       data: {
         name, city,
-        location:  { lng: -0.1276, lat: 51.5074 },     // Trafalgar Square default
+        location:  { lng: -0.1276 + jitter(), lat: 51.5074 + jitter() },
         embedding: [Math.random(), Math.random(), Math.random(), Math.random()],
       } as any,
     })
@@ -101,9 +104,11 @@ function PaginationSection({ db }: { db: Db }) {
   const TAKE = 2
 
   async function load(newSkip: number) {
-    setSkip(newSkip)
-    setRows(await db.cafe.findMany({ take: TAKE, skip: newSkip, orderBy: { name: "asc" } }) as Cafe[])
+    const clamped = Math.max(0, newSkip)
+    setSkip(clamped)
+    setRows(await db.cafe.findMany({ take: TAKE, skip: clamped, orderBy: { name: "asc" } }) as Cafe[])
   }
+  React.useEffect(() => { void load(0) }, [])
 
   return (
     <section style={S.section}>
