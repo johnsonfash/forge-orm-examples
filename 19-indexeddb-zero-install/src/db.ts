@@ -53,9 +53,11 @@ let bootPromise: Promise<Awaited<ReturnType<typeof openDb>>> | null = null
 async function openDb() {
   // `idb:` URL scheme is the terse form; equivalent to
   // `driver: indexedDbDriver({ name: 'forge-cafes' })`.
-  const db = await createDb({ schema, url: "idb:forge-cafes" })
-  await db.$migrate()
-  return db
+  //
+  // No explicit $migrate() call needed on IDB — `createDb` triggers
+  // `indexedDB.open()`, and the native `onupgradeneeded` handler is
+  // where the adapter creates any missing object stores + indexes.
+  return createDb({ schema, url: "idb:forge-cafes" })
 }
 
 export function bootDb() {
