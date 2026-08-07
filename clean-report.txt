@@ -1,0 +1,1 @@
+forge-orm-examples	06-nextjs-pglite-fullstack/next.config.js	('OK', 1)	    9254->     121 bytes
